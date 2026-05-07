@@ -8,6 +8,8 @@ struct SettingsView: View {
     @AppStorage("isExpirationReminderEnabled") private var isExpirationReminderEnabled = true
     @State private var purchaseManager = PurchaseManager.shared
     @State private var showRescanConfirmation = false
+    @State private var isRescanning = false
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         NavigationStack {
@@ -76,15 +78,22 @@ struct SettingsView: View {
                 showRescanConfirmation = true
             } label: {
                 HStack {
-                    Image(systemName: "arrow.clockwise")
+                    if isRescanning {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Image(systemName: "arrow.clockwise")
+                    }
                     Text("Rescan All Screenshots")
                 }
             }
+            .disabled(isRescanning)
         } header: {
             Text("Scanning")
         }
         .confirmationDialog("Rescan all screenshots?", isPresented: $showRescanConfirmation) {
-            Button("Rescan") {
+            Button("Rescan", role: .destructive) {
+                performRescan()
             }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -141,6 +150,30 @@ struct SettingsView: View {
             } label: {
                 Label("Reset Onboarding", systemImage: "arrow.counterclockwise")
             }
+        }
+    }
+
+    private func performRescan() {
+        isRescanning = true
+        Task {
+            let descriptor = FetchDescriptor<SnapItem>()
+            let items = (try? modelContext.fetch(descriptor)) ?? []
+            for item in items {
+                modelContext.delete(item)
+            }
+            try? modelContext.save()
+
+            let photoService = PhotoLibraryService()
+            photoService.checkAuthorization()
+            guard photoService.isAuthorized else {
+                await MainActor.run { isRescanning = false }
+                return
+            }
+
+            let scanner = ScreenshotScanner()
+            await scanner.scanAllScreenshots(photoService: photoService, modelContext: modelContext)
+
+            await MainActor.run { isRescanning = false }
         }
     }
 }

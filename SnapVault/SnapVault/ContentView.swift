@@ -1,3 +1,4 @@
+import Photos
 import SwiftData
 import SwiftUI
 
@@ -6,6 +7,7 @@ struct ContentView: View {
     @State private var photoService = PhotoLibraryService()
     @State private var scanner = ScreenshotScanner()
     @State private var monitor: ScreenshotMonitor?
+    @State private var showPermissionAlert = false
 
     @Environment(\.modelContext) private var modelContext
 
@@ -39,6 +41,16 @@ struct ContentView: View {
             setupMonitor()
             Task { await performInitialScan() }
         }
+        .alert("Photo Access Required", isPresented: $showPermissionAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("SnapVault needs photo access to scan and organize your screenshots. Please enable it in Settings.")
+        }
     }
 
     private func setupMonitor() {
@@ -48,7 +60,12 @@ struct ContentView: View {
 
     private func performInitialScan() async {
         photoService.checkAuthorization()
-        guard photoService.isAuthorized else { return }
+        guard photoService.isAuthorized else {
+            if photoService.authorizationStatus == .denied || photoService.authorizationStatus == .restricted {
+                await MainActor.run { showPermissionAlert = true }
+            }
+            return
+        }
         await scanner.scanAllScreenshots(photoService: photoService, modelContext: modelContext)
     }
 }

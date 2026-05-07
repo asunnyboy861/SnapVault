@@ -71,6 +71,9 @@ final class ScreenshotScanner {
         snapItem.category = result.category
         snapItem.isTemporary = result.isTemporary
         snapItem.isProcessed = true
+        snapItem.ocrText = result.ocrText
+        snapItem.detectedLinks = result.detectedLinks
+        snapItem.detectedAmounts = result.detectedAmounts
 
         if result.isTemporary, let hours = result.category.defaultExpirationHours {
             snapItem.expirationDate = Calendar.current.date(byAdding: .hour, value: hours, to: Date())
