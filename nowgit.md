@@ -1,77 +1,47 @@
-# SnapVault - NowGit
+# Git Repositories
 
-## Project Overview
-- **App Name**: SnapVault
-- **Bundle ID**: com.zzoutuo.SnapVault
-- **Platform**: iOS 17.0+
-- **Language**: Swift 5.9+ / SwiftUI
-- **Repository**: https://github.com/asunnyboy861/SnapVault
-- **GitHub Pages**: https://asunnyboy861.github.io/SnapVault
+## Main App (iOS Application)
 
-## Architecture
-- **UI Framework**: SwiftUI with @Observable macro
-- **Data Layer**: SwiftData with @Model macro
-- **AI/ML**: Vision Framework (OCR + QR detection), rule-based classification
-- **Photo Access**: Photos Framework (PHAsset)
-- **IAP**: StoreKit 2 (one-time non-consumable)
-- **Notifications**: UserNotifications (local only)
-- **Search**: Core Spotlight (CSSearchableIndex)
+| Item | Value |
+|------|-------|
+| **Repository Name** | SnapVault |
+| **Git URL** | git@github.com:asunnyboy861/SnapVault.git |
+| **Repo URL** | https://github.com/asunnyboy861/SnapVault |
+| **Visibility** | Public |
+| **Primary Language** | Swift |
+| **GitHub Pages** | Enabled (from /docs folder) |
 
-## Project Structure
+## Policy Pages (Deployed from Main Repository /docs)
+
+| Page | URL | Status |
+|------|-----|--------|
+| Landing Page | https://asunnyboy861.github.io/SnapVault/ | Active |
+| Support | https://asunnyboy861.github.io/SnapVault/support.html | Active |
+| Privacy Policy | https://asunnyboy861.github.io/SnapVault/privacy.html | Active |
+
+Note: Terms of Use not required for Free/Paid Download apps with one-time IAP.
+
+## Repository Structure
+
 ```
 SnapVault/
-├── SnapVault/
-│   ├── SnapVaultApp.swift          # App entry point
-│   ├── ContentView.swift           # Main TabView
-│   ├── Models/
-│   │   ├── SnapItem.swift          # SwiftData model
-│   │   ├── SnapCategory.swift      # 15 categories enum
-│   │   └── SearchEntry.swift       # Search index model
-│   ├── Views/
-│   │   ├── Onboarding/             # Welcome + permissions
-│   │   ├── Browse/                 # Category grid + detail
-│   │   ├── Clean/                  # Tinder-style swipe
-│   │   ├── Search/                 # OCR full-text search
-│   │   ├── Settings/               # Settings + contact
-│   │   └── Components/             # Reusable components
-│   ├── ViewModels/                 # View models
-│   ├── Services/                   # Photo, OCR, classification, notifications
-│   └── Purchase/                   # StoreKit 2 manager
-├── Assets.xcassets/                # App icon + colors
-└── Info.plist                      # Permissions
+├── SnapVault/                   # iOS App Source Code
+│   ├── SnapVault.xcodeproj/     # Xcode Project
+│   ├── SnapVault/               # Swift Source Files
+│   │   ├── Views/
+│   │   ├── Models/
+│   │   ├── ViewModels/
+│   │   ├── Services/
+│   │   ├── Purchase/
+│   │   └── Assets.xcassets/
+├── docs/                        # Policy Pages (GitHub Pages source)
+│   ├── index.html               # Landing Page
+│   ├── support.html             # Support Page
+│   └── privacy.html             # Privacy Policy
+├── us.md                        # English Development Guide
+├── keytext.md                   # App Store Metadata
+├── capabilities.md              # Capabilities Configuration
+├── icon.md                      # App Icon Details
+├── price.md                     # Pricing Configuration
+└── nowgit.md                    # This File
 ```
-
-## Monetization
-- **Model**: Free download + one-time $4.99 Pro IAP
-- **Product ID**: com.zzoutuo.SnapVault.pro
-- **Type**: Non-Consumable
-- **Free Features**: Scan, categorize, OCR search, temp detection, browse
-- **Pro Features**: Swipe clean, batch delete, lock, advanced search, Spotlight, share extension, export
-
-## Policy Pages
-- **Privacy Policy**: https://asunnyboy861.github.io/SnapVault/privacy
-- **Support Page**: https://asunnyboy861.github.io/SnapVault/support
-
-## Build Status
-- ✅ Build succeeds on iOS Simulator (arm64)
-- ✅ No compiler errors
-- ✅ All SwiftData models configured
-- ✅ StoreKit 2 IAP integrated
-- ✅ Photos permission configured
-- ✅ Notification permission configured
-
-## Contact
-- **Email**: iocompile67692@gmail.com
-- **GitHub**: https://github.com/asunnyboy861
-
-## Deployment Checklist
-- [x] Xcode project builds successfully
-- [x] App icon generated and configured
-- [x] IAP product ID configured
-- [x] Policy pages created
-- [x] Contact support implemented
-- [ ] Push to GitHub repository
-- [ ] Deploy policy pages to GitHub Pages
-- [ ] Create App Store Connect record
-- [ ] Configure IAP in App Store Connect
-- [ ] Submit for review
